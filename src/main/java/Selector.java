@@ -1,4 +1,6 @@
 import com.microsoft.playwright.*;
+
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Selector {
@@ -54,5 +56,38 @@ public class Selector {
         } catch (Exception e) {
             return "Ошибка: " + e.getMessage();
         }
+    }
+
+    public Map<String, String> getStatuses(Map<String, String> docs) {
+        Map<String, String> results = new LinkedHashMap<>();
+
+        try (Playwright playwright = Playwright.create()) {
+            Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions()
+                    .setHeadless(true)
+                    .setSlowMo(50));
+
+            BrowserContext context = browser.newContext(new Browser.NewContextOptions()
+                    .setViewportSize(1920, 1080)
+                    .setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"));
+
+            context.addInitScript("Object.defineProperty(navigator, 'webdriver', {get: () => undefined});");
+
+            Page page = context.newPage();
+
+            for (Map.Entry<String, String> entry : docs.entrySet()) {
+                String docName = entry.getKey();
+                String docUrl = entry.getValue();
+
+                String status = getStatusWithPlaywright(page, docUrl);
+                results.put(docName, status);
+
+                page.waitForTimeout(2000);
+            }
+
+        } catch (Exception e) {
+            System.err.println("Ошибка Playwright: " + e.getMessage());
+        }
+
+        return results;
     }
 }
