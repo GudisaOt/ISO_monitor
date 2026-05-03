@@ -85,6 +85,8 @@ public class TelegramBot extends TelegramLongPollingBot {
                     emoji = "❌";
                 } else if (status.toLowerCase().contains("under review")) {
                     emoji = "⏳";
+                } else if (status.toLowerCase().contains("Опубликовано")) {
+                    emoji = "✅";
                 } else {
                     emoji = "📄";
                 }
