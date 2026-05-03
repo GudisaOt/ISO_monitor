@@ -7,10 +7,8 @@ import java.io.IOException;
 import java.util.Map;
 
 public class TelegramBot extends TelegramLongPollingBot {
-
-    // Замените на свой токен от BotFather
     private static final String BOT_TOKEN = "8692090674:AAF4kY-E7g_6ydmBLABtfapP5eNQnIVMISk";
-    private static final String BOT_USERNAME = "@BIAMMF_bot"; // Ваш username бота
+    private static final String BOT_USERNAME = "@BIAMMF_bot";
 
     @Override
     public String getBotToken() {
